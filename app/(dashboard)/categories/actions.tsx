@@ -2,10 +2,10 @@
 
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import { useOpenAccount } from '@/features/accounts/hooks/use-open-account';
-import { useDeleteAccount } from '@/features/accounts/api/use-delete-account';
+import { Button } from '@/components/ui/button';
+import { useOpenCategory } from '@/features/categories/hooks/use-open-category';
+import { useDeleteCategory } from '@/features/categories/api/use-delete-category';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 type Props = {
@@ -13,10 +13,10 @@ type Props = {
 }
 
 export const Actions = ({ id }: Readonly<Props>) => {
-  const { onOpen } = useOpenAccount();
+  const { onOpen } = useOpenCategory();
 
-  const deleteMutation = useDeleteAccount(id);
-  const [ConfirmDialog, confirm] = useConfirm('Are you sure?', 'You are about to delete this account');
+  const deleteMutation = useDeleteCategory(id);
+  const [ConfirmDialog, confirm] = useConfirm('Are you sure?', 'You are about to delete this category');
 
   const handleDelete = async () => {
     const ok = await confirm();

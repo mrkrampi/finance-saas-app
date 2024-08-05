@@ -15,6 +15,13 @@
       "when": 1722758108905,
       "tag": "0001_overconfident_wasp",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1722866093036,
+      "tag": "0002_military_namor",
+      "breakpoints": true
     }
   ]
 }
