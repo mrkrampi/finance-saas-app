@@ -3,7 +3,9 @@ import { Inter } from 'next/font/google';
 import { PropsWithChildren } from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
 
+import { Toaster } from '@/components/ui/sonner';
 import { QueryProvider } from '@/providers/query-provider';
+import { SheetProvider } from '@/providers/sheet-provider';
 
 import './globals.css';
 
@@ -20,6 +22,8 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
       <html lang="en">
       <body className={inter.className}>
       <QueryProvider>
+        <SheetProvider/>
+        <Toaster/>
         {children}
       </QueryProvider>
       </body>
