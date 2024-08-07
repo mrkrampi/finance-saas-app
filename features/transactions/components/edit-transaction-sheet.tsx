@@ -8,6 +8,11 @@ import { useEditTransaction } from '@/features/transactions/api/use-edit-transac
 import { useOpenTransaction } from '@/features/transactions/hooks/use-open-transaction';
 import { useDeleteTransaction } from '@/features/transactions/api/use-delete-transaction';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { useGetCategories } from '@/features/categories/api/use-get-categories';
+import { useCreateCategory } from '@/features/categories/api/use-create-category';
+import { useGetAccounts } from '@/features/accounts/api/use-get-accounts';
+import { useCreateAccount } from '@/features/accounts/api/use-create-account';
+import { TransactionForm } from '@/features/transactions/components/transaction-form';
 
 const formSchema = insertTransactionSchema.omit({
   id: true,
@@ -24,8 +29,38 @@ export const EditTransactionSheet = () => {
   const editMutation = useEditTransaction(id);
   const deleteMutation = useDeleteTransaction(id);
 
-  const isPending = editMutation.isPending || deleteMutation.isPending;
-  const isLoading = transactionQuery.isLoading;
+  const categoryQuery = useGetCategories();
+  const categoryMutation = useCreateCategory();
+
+  const onCreateCategory = (name: string) => categoryMutation.mutate({
+    name,
+  });
+
+  const categoryOptions = (categoryQuery.data ?? []).map((category) => ({
+    label: category.name,
+    value: category.id,
+  }));
+
+  const accountQuery = useGetAccounts();
+  const accountMutation = useCreateAccount();
+
+  const onCreateAccount = (name: string) => accountMutation.mutate({
+    name,
+  });
+
+  const accountOptions = (accountQuery.data ?? []).map((account) => ({
+    label: account.name,
+    value: account.id,
+  }));
+
+  const isPending = editMutation.isPending
+    || deleteMutation.isPending
+    || transactionQuery.isLoading
+    || categoryMutation.isPending
+    || accountMutation.isPending;
+  const isLoading = transactionQuery.isLoading
+    || categoryQuery.isLoading
+    || accountQuery.isLoading;
 
   const onSubmit = (values: FormValues) => {
     editMutation.mutate(values, {
@@ -51,10 +86,20 @@ export const EditTransactionSheet = () => {
 
   const defaultValues = transactionQuery.data
     ? {
-      name: '',
+      accountId: transactionQuery.data.accountId,
+      categoryId: transactionQuery.data.categoryId,
+      amount: transactionQuery.data.amount.toString(),
+      payee: transactionQuery.data.payee,
+      notes: transactionQuery.data.notes,
+      date: transactionQuery.data.date ? new Date(transactionQuery.data.date) : new Date(),
     }
     : {
-      name: '',
+      accountId: '',
+      categoryId: '',
+      amount: '',
+      payee: '',
+      notes: '',
+      date: new Date(),
     };
 
   return (
@@ -78,9 +123,16 @@ export const EditTransactionSheet = () => {
                 </div>
               )
               : (
-                <p>
-                  TODO: Transaction form
-                </p>
+                <TransactionForm
+                  id={id}
+                  onSubmit={onSubmit}
+                  disabled={isPending}
+                  categoryOptions={categoryOptions}
+                  onCreateCategory={onCreateCategory}
+                  accountOptions={accountOptions}
+                  onCreateAccount={onCreateAccount}
+                  defaultValues={defaultValues}
+                />
               )
           }
         </SheetContent>

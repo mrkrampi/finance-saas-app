@@ -53,7 +53,7 @@ const TransactionsPage = () => {
 
         <CardContent>
           <DataTable
-            filterKey="name"
+            filterKey="payee"
             data={transactions}
             columns={columns}
             onDelete={(rows) => {

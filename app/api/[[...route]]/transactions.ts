@@ -240,7 +240,7 @@ const app = new Hono()
             .where(
               and(
                 eq(transactions.id, id),
-                eq(accounts.id, auth.userId),
+                eq(accounts.userId, auth.userId),
               ),
             ),
         );
