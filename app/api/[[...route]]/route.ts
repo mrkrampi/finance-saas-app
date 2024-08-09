@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { HTTPException } from 'hono/http-exception';
 
+import summary from '@/app/api/[[...route]]/summary';
 import accounts from '@/app/api/[[...route]]/accounts';
 import categories from '@/app/api/[[...route]]/categories';
 import transactions from '@/app/api/[[...route]]/transactions';
@@ -19,6 +20,7 @@ app.onError((err, ctx) => {
 });
 
 const routes = app
+  .route('/summary', summary)
   .route('/accounts', accounts)
   .route('/categories', categories)
   .route('/transactions', transactions);
