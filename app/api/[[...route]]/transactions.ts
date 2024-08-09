@@ -182,7 +182,7 @@ const app = new Hono()
             .where(
               and(
                 inArray(transactions.id, values.ids),
-                eq(accounts.id, auth.userId),
+                eq(accounts.userId, auth.userId),
               ),
             ),
         );
