@@ -1,25 +1,25 @@
 import { useState } from 'react';
-import { FileSearch, AreaChart, LineChart, BarChart3, Loader2 } from 'lucide-react';
+import { FileSearch, Loader2, PieChart, Radar, Target } from 'lucide-react';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { BarVariant } from '@/components/bar-variant';
-import { AreaVariant } from '@/components/area-variant';
-import { LineVariant } from '@/components/line-variant';
+import { PieVariant } from '@/components/pie-variant';
+import { RadarVariant } from '@/components/radar-variant';
+import { RadialVariant } from '@/components/radial-variant';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 enum ChartTypes {
-  AREA = 'area',
-  BAR = 'bar',
-  LINE = 'line',
+  PIE = 'pie',
+  RADAR = 'radar',
+  RADIAL = 'radial',
 }
 
 type Props = {
-  data?: Array<{ date: string; income: number; expenses: number; }>;
+  data?: Array<{ name: string; value: number; }>;
 }
 
-export const Chart = ({ data = [] }: Readonly<Props>) => {
-  const [chartType, setChartType] = useState<ChartTypes>(ChartTypes.AREA);
+export const SpendingPie = ({ data = [] }: Readonly<Props>) => {
+  const [chartType, setChartType] = useState<ChartTypes>(ChartTypes.PIE);
 
   const onTypeChange = (type: ChartTypes) => {
     // TODO: Add paywall
@@ -30,7 +30,7 @@ export const Chart = ({ data = [] }: Readonly<Props>) => {
     <Card className="border-none drop-shadow-sm">
       <CardHeader className="flex space-y-2 lg:space-y-0 lg:flex-row lg:items-center justify-between">
         <CardTitle className="text-xl line-clamp-1">
-          Transactions
+          Categories
         </CardTitle>
 
         <Select
@@ -42,32 +42,32 @@ export const Chart = ({ data = [] }: Readonly<Props>) => {
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value={ChartTypes.AREA}>
+            <SelectItem value={ChartTypes.PIE}>
               <div className="flex items-center">
-                <AreaChart className="size-4 mr-2 shrink-0"/>
+                <PieChart className="size-4 mr-2 shrink-0"/>
 
                 <p className="line-clamp-1">
-                  Area chart
+                  Pie chart
                 </p>
               </div>
             </SelectItem>
 
-            <SelectItem value={ChartTypes.LINE}>
+            <SelectItem value={ChartTypes.RADAR}>
               <div className="flex items-center">
-                <LineChart className="size-4 mr-2 shrink-0"/>
+                <Radar className="size-4 mr-2 shrink-0"/>
 
                 <p className="line-clamp-1">
-                  Line chart
+                  Radar chart
                 </p>
               </div>
             </SelectItem>
 
-            <SelectItem value={ChartTypes.BAR}>
+            <SelectItem value={ChartTypes.RADIAL}>
               <div className="flex items-center">
-                <BarChart3 className="size-4 mr-2 shrink-0"/>
+                <Target className="size-4 mr-2 shrink-0"/>
 
                 <p className="line-clamp-1">
-                  Bar chart
+                  Radial chart
                 </p>
               </div>
             </SelectItem>
@@ -88,9 +88,9 @@ export const Chart = ({ data = [] }: Readonly<Props>) => {
             )
             : (
               <>
-                {chartType === ChartTypes.AREA && <AreaVariant data={data}/>}
-                {chartType === ChartTypes.BAR && <BarVariant data={data}/>}
-                {chartType === ChartTypes.LINE && <LineVariant data={data}/>}
+                {chartType === ChartTypes.PIE && <PieVariant data={data}/>}
+                {chartType === ChartTypes.RADAR && <RadarVariant data={data}/>}
+                {chartType === ChartTypes.RADIAL && <RadialVariant data={data}/>}
               </>
             )
         }
@@ -99,7 +99,7 @@ export const Chart = ({ data = [] }: Readonly<Props>) => {
   );
 };
 
-export const ChartLoading = () => {
+export const SpendingPieLoading = () => {
   return (
     <Card className="border-none drop-shadow-sm">
       <CardHeader className="flex justify-between space-y-2 lg:flex-row lg:items-center lg:space-y-0">
